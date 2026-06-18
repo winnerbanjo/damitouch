@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Detailed DamiTouch Airbnb listing information, features, gallery, and location." />
+    <title>Listing Details | DamiTouch Airbnb</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header scrolled">
+      <a class="brand" href="index.html" aria-label="DamiTouch Airbnb home">
+        <img src="assets/logo.jpeg" alt="DamiTouch Airbnb logo" />
+        <span>DamiTouch Airbnb</span>
+      </a>
+      <nav class="desktop-nav" aria-label="Main navigation">
+        <a href="listing.html">Listing</a>
+        <a href="policies.html">Policies</a>
+        <a href="contact.html">Contact</a>
+        <a href="index.html#booking">Book</a>
+      </nav>
+      <button class="menu-button" type="button" data-menu-toggle aria-label="Open menu"><span></span><span></span></button>
+    </header>
+    <nav class="mobile-nav" data-mobile-nav aria-label="Mobile navigation">
+      <a href="listing.html">Listing</a>
+      <a href="policies.html">Policies</a>
+      <a href="contact.html">Contact</a>
+      <a href="index.html#booking">Book now</a>
+    </nav>
+
+    <main>
+      <section class="page-hero listing-hero">
+        <img src="assets/lounge-tv.jpeg" alt="DamiTouch Airbnb living room TV area" />
+        <div>
+          <p class="eyebrow">Listing details</p>
+          <h1>2-bedroom duplex apartments prepared for comfort and convenience.</h1>
+          <p>Two units available at 35 Favour Estate, Onitiri, Awori, Abule Egba, Lagos State.</p>
+          <a class="primary-button" href="index.html#booking">Reserve this stay</a>
+        </div>
+      </section>
+
+      <section class="section detail-section">
+        <div class="detail-copy reveal">
+          <p class="eyebrow">Overview</p>
+          <h2>A polished short-stay home for guests who want privacy, power, and a secure estate.</h2>
+          <p>
+            DamiTouch Airbnb offers a beautiful 2-bedroom duplex with ensuite rooms, a stylish lounge,
+            streaming entertainment, unlimited internet, a fully equipped open kitchen, water heater,
+            and 24/7 electricity supply. The estate is peaceful, developed, gated, and suitable for
+            couples, families, business guests, and small groups.
+          </p>
+        </div>
+        <div class="rate-card reveal">
+          <span>Promo price</span>
+          <strong>₦150,000</strong>
+          <p>Caution fee: ₦50,000</p>
+          <a class="primary-button full-button" href="index.html#booking">Book now</a>
+        </div>
+      </section>
+
+      <section class="section amenity-band">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Amenities</p>
+          <h2>Everything guests naturally expect from a premium short stay.</h2>
+        </div>
+        <div class="amenity-grid reveal">
+          <article><h3>24/7 power supply</h3><p>Reliable electricity for work, rest, and entertainment.</p></article>
+          <article><h3>Unlimited internet</h3><p>Stay connected for streaming, calls, and remote work.</p></article>
+          <article><h3>Ensuite bedrooms</h3><p>Private rooms designed for comfort and convenience.</p></article>
+          <article><h3>Open kitchen</h3><p>Fully equipped kitchen with clean modern cabinetry and workspace.</p></article>
+          <article><h3>Streaming ready</h3><p>Netflix, DStv, YouTube, and Prime Video available.</p></article>
+          <article><h3>Gated security</h3><p>Located in a secure and well-developed neighborhood.</p></article>
+        </div>
+      </section>
+
+      <section class="section gallery-section">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Full photo feel</p>
+          <h2>Warm lighting, marble finishes, and comfortable living spaces.</h2>
+        </div>
+        <div class="gallery-grid listing-gallery">
+          <button class="photo-tile large reveal" type="button" data-photo="0"><img src="assets/living-room.jpeg" alt="Living room and staircase" /></button>
+          <button class="photo-tile reveal" type="button" data-photo="1"><img src="assets/bedroom.jpeg" alt="Bedroom" /></button>
+          <button class="photo-tile reveal" type="button" data-photo="2"><img src="assets/kitchen-close.jpeg" alt="Kitchen" /></button>
+          <button class="photo-tile reveal" type="button" data-photo="3"><img src="assets/lounge-tv.jpeg" alt="Lounge TV" /></button>
+          <button class="photo-tile reveal" type="button" data-photo="4"><img src="assets/bathroom.jpeg" alt="Bathroom" /></button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer detailed-footer">
+      <div><a class="footer-brand" href="index.html"><img src="assets/logo.jpeg" alt="" /><span>DamiTouch Airbnb</span></a><p>Beautiful 2-bedroom duplex apartments in Abule Egba, Lagos.</p></div>
+      <div><h3>Explore</h3><a href="index.html">Home</a><a href="policies.html">Policies</a><a href="contact.html">Contact</a></div>
+      <div><h3>Booking</h3><a href="index.html#booking">Book on WhatsApp</a><a href="tel:+2349046809936">+234 904 680 9936</a><a href="mailto:Damitouchairbnb@gmail.com">Damitouchairbnb@gmail.com</a></div>
+      <div><h3>Social</h3><a href="https://facebook.com/damitouchairbnb">Facebook @damitouchairbnb</a><a href="https://www.tiktok.com/@damitouchairbnb">TikTok @damitouchairbnb</a></div>
+    </footer>
+
+    <dialog class="lightbox" data-lightbox>
+      <button type="button" data-lightbox-close aria-label="Close photo viewer">×</button>
+      <img src="assets/living-room.jpeg" alt="" data-lightbox-image />
+      <div class="lightbox-controls"><button type="button" data-prev-photo>Previous</button><button type="button" data-next-photo>Next</button></div>
+    </dialog>
+    <a class="floating-book" href="index.html#booking" aria-label="Book DamiTouch Airbnb on WhatsApp"><span>Book</span><strong>₦150k</strong></a>
+    <div class="toast" data-toast role="status" aria-live="polite"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
