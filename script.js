@@ -1,16 +1,21 @@
 const photos = [
-  { src: "assets/living-room.jpeg", alt: "Main living room with staircase" },
-  { src: "assets/bedroom.jpeg", alt: "Bedroom with black curtains and air conditioner" },
-  { src: "assets/kitchen-close.jpeg", alt: "Marble-style kitchen cabinets" },
-  { src: "assets/lounge-tv.jpeg", alt: "Living area with TV wall and yellow chair" },
-  { src: "assets/bathroom.jpeg", alt: "Bathroom shower area" },
-  { src: "assets/tv-wall.jpeg", alt: "TV wall with air conditioner" },
-  { src: "assets/kitchen-stairs.jpeg", alt: "Kitchen beside duplex staircase" },
-  { src: "assets/kitchen-view.jpeg", alt: "Kitchen view into the lounge" },
+  { src: "assets/sharp/property-01.jpeg", alt: "Main living room with staircase" },
+  { src: "assets/sharp/property-02.jpeg", alt: "Bedroom with black curtains and air conditioner" },
+  { src: "assets/sharp/property-03.jpeg", alt: "Marble-style kitchen cabinets" },
+  { src: "assets/sharp/property-04.jpeg", alt: "Living area with TV wall and yellow chair" },
+  { src: "assets/sharp/property-05.jpeg", alt: "Bathroom shower area" },
+  { src: "assets/sharp/property-06.jpeg", alt: "TV wall with air conditioner" },
+  { src: "assets/sharp/property-07.jpeg", alt: "Kitchen beside duplex staircase" },
+  { src: "assets/sharp/property-08.jpeg", alt: "Kitchen view into the lounge" },
+  { src: "assets/sharp/property-09.jpeg", alt: "Additional property view" },
+  { src: "assets/sharp/property-10.jpeg", alt: "Additional property view" },
+  { src: "assets/sharp/property-11.jpeg", alt: "Additional property view" },
+  { src: "assets/sharp/property-12.jpeg", alt: "Additional property view" },
 ];
 
 const whatsappNumber = "2348126517690";
 const storageKey = "damitouch-bookings";
+const propertiesKey = "damitouch-properties";
 let activePhoto = 0;
 
 const header = document.querySelector("[data-header]");
@@ -65,6 +70,30 @@ const updateLightbox = () => {
   const photo = photos[activePhoto];
   lightboxImage.src = photo.src;
   lightboxImage.alt = photo.alt;
+};
+
+const renderPublicProperties = () => {
+  const section = document.querySelector("[data-public-properties-section]");
+  const list = document.querySelector("[data-public-properties]");
+  if (!section || !list) return;
+
+  const properties = JSON.parse(localStorage.getItem(propertiesKey) || "[]");
+  section.hidden = properties.length === 0;
+  list.innerHTML = properties
+    .map(
+      (property) => `
+        <article class="property-card">
+          ${property.image ? `<img src="${property.image}" alt="${property.name}" />` : ""}
+          <div>
+            <span>${property.status || "Available"}</span>
+            <h3>${property.name}</h3>
+            <p>${property.location}</p>
+            <strong>${property.price}</strong>
+          </div>
+        </article>
+      `
+    )
+    .join("");
 };
 
 if (header) {
@@ -137,3 +166,4 @@ const revealObserver = new IntersectionObserver(
 );
 
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+renderPublicProperties();

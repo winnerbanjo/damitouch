@@ -1,10 +1,13 @@
 const adminPassword = "DamiTouch2026";
 const storageKey = "damitouch-bookings";
+const propertiesKey = "damitouch-properties";
 
 const login = document.querySelector("[data-admin-login]");
 const dashboard = document.querySelector("[data-admin-dashboard]");
 const passwordForm = document.querySelector("[data-password-form]");
 const adminList = document.querySelector("[data-admin-list]");
+const propertyForm = document.querySelector("[data-property-form]");
+const propertyList = document.querySelector("[data-property-list]");
 const errorText = document.querySelector("[data-admin-error]");
 const toast = document.querySelector("[data-toast]");
 
@@ -15,6 +18,7 @@ const showToast = (message) => {
 };
 
 const getBookings = () => JSON.parse(localStorage.getItem(storageKey) || "[]");
+const getProperties = () => JSON.parse(localStorage.getItem(propertiesKey) || "[]");
 
 const formatDate = (value) => {
   if (!value) return "Not selected";
@@ -49,11 +53,37 @@ const renderAdmin = () => {
     .join("");
 };
 
+const renderProperties = () => {
+  const properties = getProperties();
+  if (!properties.length) {
+    propertyList.innerHTML =
+      '<div class="admin-item"><strong>No properties added yet</strong><p>Use the form above to save a property on this browser.</p></div>';
+    return;
+  }
+
+  propertyList.innerHTML = properties
+    .map(
+      (property, index) => `
+        <article class="admin-item property-admin-item">
+          ${property.image ? `<img src="${property.image}" alt="${property.name}" />` : ""}
+          <div>
+            <strong>${property.name}</strong>
+            <p>${property.location}</p>
+            <p>${property.price} • ${property.status || "Available"}</p>
+            <button type="button" data-remove-property="${index}">Remove</button>
+          </div>
+        </article>
+      `
+    )
+    .join("");
+};
+
 const unlock = () => {
   sessionStorage.setItem("damitouch-admin-unlocked", "true");
   login.hidden = true;
   dashboard.hidden = false;
   renderAdmin();
+  renderProperties();
 };
 
 if (sessionStorage.getItem("damitouch-admin-unlocked") === "true") {
@@ -75,4 +105,24 @@ document.querySelector("[data-clear-bookings]").addEventListener("click", () => 
   localStorage.removeItem(storageKey);
   renderAdmin();
   showToast("Saved booking requests cleared.");
+});
+
+propertyForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const property = Object.fromEntries(new FormData(propertyForm).entries());
+  const properties = [property, ...getProperties()];
+  localStorage.setItem(propertiesKey, JSON.stringify(properties));
+  propertyForm.reset();
+  renderProperties();
+  showToast("Property saved.");
+});
+
+propertyList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-remove-property]");
+  if (!button) return;
+  const properties = getProperties();
+  properties.splice(Number(button.dataset.removeProperty), 1);
+  localStorage.setItem(propertiesKey, JSON.stringify(properties));
+  renderProperties();
+  showToast("Property removed.");
 });

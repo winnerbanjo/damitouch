@@ -41,6 +41,40 @@
         <button class="secondary-button full-button" type="button" data-clear-bookings>
           Clear saved requests
         </button>
+
+        <div class="admin-divider"></div>
+        <div class="admin-topbar compact">
+          <div>
+            <p class="eyebrow">Property manager</p>
+            <h2>Add properties</h2>
+          </div>
+        </div>
+        <form class="property-form" data-property-form>
+          <label>
+            Property name
+            <input name="name" type="text" required placeholder="2-bedroom duplex" />
+          </label>
+          <label>
+            Location
+            <input name="location" type="text" required placeholder="Abule Egba, Lagos" />
+          </label>
+          <div class="two-column">
+            <label>
+              Price
+              <input name="price" type="text" required placeholder="₦150,000" />
+            </label>
+            <label>
+              Status
+              <input name="status" type="text" placeholder="Available" />
+            </label>
+          </div>
+          <label>
+            Image URL
+            <input name="image" type="url" placeholder="https://..." />
+          </label>
+          <button class="primary-button full-button" type="submit">Add property</button>
+        </form>
+        <div class="admin-list page-list" data-property-list></div>
       </section>
     </main>
 

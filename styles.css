@@ -405,6 +405,7 @@ h3 {
 
 .feature-grid article {
   padding: 22px;
+  overflow: hidden;
 }
 
 .feature-grid span {
@@ -561,6 +562,10 @@ dd {
   border-radius: 8px;
   color: #fff;
   background: linear-gradient(135deg, var(--green), #22201b);
+}
+
+.payment-after-submit {
+  margin-top: 2px;
 }
 
 .bank-box span {
@@ -794,6 +799,47 @@ dd {
   overflow-wrap: anywhere;
 }
 
+.property-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.property-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  box-shadow: 0 18px 50px rgba(39, 31, 22, 0.08);
+}
+
+.property-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.property-card div {
+  padding: 18px;
+}
+
+.property-card span {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.property-card p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.property-card strong {
+  color: var(--green);
+  font-size: 22px;
+}
+
 .floating-book {
   position: fixed;
   right: 18px;
@@ -985,6 +1031,47 @@ dd {
   margin-bottom: 24px;
 }
 
+.admin-topbar.compact h2 {
+  margin-bottom: 0;
+  font-size: clamp(28px, 4vw, 42px);
+}
+
+.admin-divider {
+  height: 1px;
+  margin: 28px 0;
+  background: var(--line);
+}
+
+.property-form {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.property-admin-item {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 14px;
+  align-items: center;
+}
+
+.property-admin-item img {
+  width: 120px;
+  height: 90px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.property-admin-item button {
+  min-height: 38px;
+  margin-top: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 800;
+}
+
 .page-list {
   max-height: 54vh;
   overflow: auto;
@@ -1109,6 +1196,7 @@ dd {
   .detail-section,
   .policy-detail,
   .contact-grid,
+  .property-grid,
   .site-footer {
     grid-template-columns: 1fr;
   }
@@ -1187,10 +1275,7 @@ dd {
   }
 
   .floating-book {
-    width: 70px;
-    height: 70px;
-    right: 14px;
-    bottom: 14px;
+    display: none;
   }
 
   .floating-book strong {
@@ -1227,6 +1312,15 @@ dd {
 
   .admin-topbar {
     display: grid;
+  }
+
+  .property-admin-item {
+    grid-template-columns: 1fr;
+  }
+
+  .property-admin-item img {
+    width: 100%;
+    height: 180px;
   }
 }
 
