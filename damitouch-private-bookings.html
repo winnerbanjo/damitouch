@@ -69,8 +69,14 @@
             </label>
           </div>
           <label>
+            Upload property image
+            <input name="imageFile" type="file" accept="image/*" />
+            <small>Best option: choose a photo from the phone or computer.</small>
+          </label>
+          <label>
             Image URL
-            <input name="image" type="url" placeholder="https://..." />
+            <input name="image" type="url" placeholder="Optional: https://..." />
+            <small>Use this only if the image is already online.</small>
           </label>
           <button class="primary-button full-button" type="submit">Add property</button>
         </form>

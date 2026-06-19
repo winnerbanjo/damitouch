@@ -78,6 +78,20 @@ const renderProperties = () => {
     .join("");
 };
 
+const fileToDataUrl = (file) => {
+  return new Promise((resolve, reject) => {
+    if (!file) {
+      resolve("");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.addEventListener("load", () => resolve(reader.result));
+    reader.addEventListener("error", () => reject(reader.error));
+    reader.readAsDataURL(file);
+  });
+};
+
 const unlock = () => {
   sessionStorage.setItem("damitouch-admin-unlocked", "true");
   login.hidden = true;
@@ -107,9 +121,16 @@ document.querySelector("[data-clear-bookings]").addEventListener("click", () => 
   showToast("Saved booking requests cleared.");
 });
 
-propertyForm.addEventListener("submit", (event) => {
+propertyForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const property = Object.fromEntries(new FormData(propertyForm).entries());
+  const formData = new FormData(propertyForm);
+  const imageFile = formData.get("imageFile");
+  const property = Object.fromEntries(formData.entries());
+  delete property.imageFile;
+  const uploadedImage = await fileToDataUrl(imageFile);
+  if (uploadedImage) {
+    property.image = uploadedImage;
+  }
   const properties = [property, ...getProperties()];
   localStorage.setItem(propertiesKey, JSON.stringify(properties));
   propertyForm.reset();
