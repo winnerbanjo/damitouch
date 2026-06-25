@@ -357,12 +357,18 @@ h3 {
   padding: clamp(70px, 9vw, 120px) clamp(20px, 5vw, 70px);
 }
 
-.split-section,
+.split-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
+  gap: clamp(28px, 5vw, 56px);
+  align-items: start;
+}
+
 .booking-section,
 .policy-section {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr);
-  gap: clamp(28px, 5vw, 70px);
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.65fr);
+  gap: clamp(28px, 5vw, 56px);
   align-items: start;
 }
 
@@ -479,9 +485,9 @@ h3 {
 }
 
 .booking-panel {
-  display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: clamp(24px, 4vw, 46px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 3vw, 32px);
   padding: clamp(22px, 4vw, 38px);
 }
 
