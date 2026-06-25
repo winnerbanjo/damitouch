@@ -1340,3 +1340,190 @@ dd {
     transition-duration: 0.001ms !important;
   }
 }
+
+/* UI Polishes & Enhancements */
+
+/* Button Loading State */
+.button-loading {
+  position: relative !important;
+  color: transparent !important;
+  pointer-events: none !important;
+  user-select: none !important;
+}
+
+.button-loading::before {
+  content: "" !important;
+  position: absolute !important;
+  left: 50% !important;
+  top: 50% !important;
+  width: 20px !important;
+  height: 20px !important;
+  margin-left: -10px !important;
+  margin-top: -10px !important;
+  border: 2px solid rgba(0, 0, 0, 0.15) !important;
+  border-top-color: currentColor !important;
+  border-radius: 50% !important;
+  animation: buttonSpinner 0.6s linear infinite !important;
+  z-index: 10 !important;
+}
+
+/* For dark buttons with light loading spinners */
+.primary-button.button-loading::before,
+.floating-book.button-loading::before {
+  border: 2px solid rgba(255, 255, 255, 0.25) !important;
+  border-top-color: #20170b !important;
+}
+
+@keyframes buttonSpinner {
+  to { transform: rotate(360deg); }
+}
+
+/* Skeleton Loading Screens */
+.skeleton-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--paper);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 140px;
+  box-shadow: 0 18px 50px rgba(39, 31, 22, 0.08);
+}
+
+.skeleton-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0,
+    rgba(255, 255, 255, 0.3) 20%,
+    rgba(255, 255, 255, 0.6) 60%,
+    rgba(255, 255, 255, 0)
+  );
+  animation: shimmer 1.6s infinite;
+}
+
+.skeleton-line {
+  height: 16px;
+  width: 100%;
+  background: #eee;
+  border-radius: 4px;
+}
+
+.skeleton-line.short {
+  width: 50%;
+}
+
+.skeleton-line.title {
+  height: 24px;
+  width: 80%;
+}
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Admin Dashboard Grid Updates */
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+  width: 100%;
+}
+
+.stat-card {
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 8px 32px rgba(35, 30, 22, 0.06);
+}
+
+.stat-card span {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.5px;
+}
+
+.stat-card strong {
+  display: block;
+  font-size: 38px;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+.admin-grid-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: clamp(24px, 4vw, 42px);
+  align-items: start;
+  width: 100%;
+}
+
+/* Image Upload Preview */
+.image-preview {
+  margin-top: 10px;
+  position: relative;
+  width: 100%;
+  height: 160px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px dashed var(--line);
+  background: var(--soft);
+}
+
+.image-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Badge States */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.badge-available {
+  background: #eef6f1;
+  color: var(--green);
+}
+
+.badge-booked {
+  background: #fdf2f2;
+  color: #9b2f2f;
+}
+
+/* Responsive Dashboard Layout */
+@media (max-width: 900px) {
+  .admin-grid-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 500px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

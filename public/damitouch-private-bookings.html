@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DamiTouch Airbnb | Private Bookings</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-page">
+    <main class="admin-shell">
+      <section class="admin-login" data-admin-login>
+        <img src="assets/logo.jpeg" alt="DamiTouch Airbnb logo" />
+        <p class="eyebrow">Private link</p>
+        <h1>Booking Admin</h1>
+        <p>Enter the password to view booking requests saved in the cloud database.</p>
+        <form data-password-form>
+          <label>
+            Password
+            <input name="password" type="password" autocomplete="current-password" required />
+          </label>
+          <button class="primary-button full-button" type="submit">Unlock bookings</button>
+        </form>
+        <p class="admin-error" data-admin-error></p>
+      </section>
+
+      <section class="admin-dashboard" data-admin-dashboard hidden>
+        <div class="admin-topbar">
+          <div>
+            <p class="eyebrow">DamiTouch Airbnb</p>
+            <h1>Dashboard</h1>
+          </div>
+          <a class="secondary-button" href="index.html">Back to site</a>
+        </div>
+
+        <!-- Dashboard Stats Grid -->
+        <div class="admin-stats-grid">
+          <div class="stat-card">
+            <span>Total Booking Requests</span>
+            <strong data-stat-bookings>0</strong>
+          </div>
+          <div class="stat-card">
+            <span>Active Listings</span>
+            <strong data-stat-listings>0</strong>
+          </div>
+        </div>
+
+        <!-- Main Dashboard Split Layout -->
+        <div class="admin-grid-layout">
+          <!-- Left Column: Booking Requests -->
+          <div class="admin-dashboard-section">
+            <div class="admin-topbar compact">
+              <div>
+                <p class="eyebrow">Reservations logs</p>
+                <h2>Booking Requests</h2>
+              </div>
+            </div>
+            <div class="admin-list page-list" data-admin-list></div>
+            <button class="secondary-button full-button" type="button" data-clear-bookings>
+              Clear saved requests
+            </button>
+          </div>
+
+          <!-- Right Column: Property Manager & Listing List -->
+          <div class="admin-dashboard-section">
+            <div class="admin-topbar compact">
+              <div>
+                <p class="eyebrow">Property Manager</p>
+                <h2>Add Properties</h2>
+              </div>
+            </div>
+            <form class="property-form" data-property-form>
+              <label>
+                Property name
+                <input name="name" type="text" required placeholder="2-bedroom duplex" />
+              </label>
+              <label>
+                Location
+                <input name="location" type="text" required placeholder="Abule Egba, Lagos" />
+              </label>
+              <div class="two-column">
+                <label>
+                  Price
+                  <input name="price" type="text" required placeholder="₦150,000" />
+                </label>
+                <label>
+                  Status
+                  <select name="status">
+                    <option value="Available">Available</option>
+                    <option value="Booked">Booked</option>
+                  </select>
+                </label>
+              </div>
+              <label>
+                Upload property image
+                <input name="imageFile" type="file" accept="image/*" data-image-file-input />
+                <small>Best option: choose a photo from the phone or computer.</small>
+                <div class="image-preview" data-image-preview hidden></div>
+              </label>
+              <label>
+                Image URL
+                <input name="image" type="url" placeholder="Optional: https://..." />
+                <small>Use this only if the image is already online.</small>
+              </label>
+              <button class="primary-button full-button" type="submit" data-property-submit-btn>Add Property</button>
+            </form>
+
+            <div class="admin-divider"></div>
+
+            <div class="admin-topbar compact">
+              <div>
+                <p class="eyebrow">Active listings</p>
+                <h2>Manage listings</h2>
+              </div>
+            </div>
+            <div class="admin-list page-list" data-property-list></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" data-toast role="status" aria-live="polite"></div>
+    <script src="admin.js"></script>
+  </body>
+</html>

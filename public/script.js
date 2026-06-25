@@ -72,28 +72,44 @@ const updateLightbox = () => {
   lightboxImage.alt = photo.alt;
 };
 
-const renderPublicProperties = () => {
+const renderPublicProperties = async () => {
   const section = document.querySelector("[data-public-properties-section]");
   const list = document.querySelector("[data-public-properties]");
   if (!section || !list) return;
 
-  const properties = JSON.parse(localStorage.getItem(propertiesKey) || "[]");
-  section.hidden = properties.length === 0;
-  list.innerHTML = properties
-    .map(
-      (property) => `
-        <article class="property-card">
-          ${property.image ? `<img src="${property.image}" alt="${property.name}" />` : ""}
-          <div>
-            <span>${property.status || "Available"}</span>
-            <h3>${property.name}</h3>
-            <p>${property.location}</p>
-            <strong>${property.price}</strong>
-          </div>
-        </article>
-      `
-    )
-    .join("");
+  // Render Skeleton Loaders
+  list.innerHTML = Array(3).fill(0).map(() => `
+    <div class="skeleton-card">
+      <div class="skeleton-line title"></div>
+      <div class="skeleton-line"></div>
+      <div class="skeleton-line short"></div>
+    </div>
+  `).join('');
+
+  try {
+    const response = await fetch('/api/properties');
+    if (!response.ok) throw new Error('Failed to fetch properties');
+    const properties = await response.json();
+
+    section.hidden = properties.length === 0;
+    list.innerHTML = properties
+      .map(
+        (property) => `
+          <article class="property-card">
+            ${property.image ? `<img src="${property.image}" alt="${property.name}" />` : ""}
+            <div>
+              <span>${property.status || "Available"}</span>
+              <h3>${property.name}</h3>
+              <p>${property.location}</p>
+              <strong>${property.price}</strong>
+            </div>
+          </article>
+        `
+      )
+      .join("");
+  } catch (error) {
+    console.error('Error rendering properties:', error);
+  }
 };
 
 if (header) {
@@ -133,24 +149,44 @@ document.querySelector("[data-next-photo]")?.addEventListener("click", () => {
   updateLightbox();
 });
 
-bookingForm?.addEventListener("submit", (event) => {
+bookingForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const formData = new FormData(bookingForm);
   const booking = Object.fromEntries(formData.entries());
-  booking.createdAt = new Date().toISOString();
+  const submitBtn = bookingForm.querySelector("button[type='submit']");
 
   if (new Date(booking.checkout) <= new Date(booking.checkin)) {
     showToast("Check-out must be after check-in.");
     return;
   }
 
-  saveBooking(booking);
-  showToast("Booking saved. WhatsApp is opening now.");
+  if (submitBtn) submitBtn.classList.add("button-loading");
 
-  const message = encodeURIComponent(buildWhatsAppMessage(booking));
-  window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank", "noopener,noreferrer");
-  bookingForm.reset();
-  bookingForm.elements.guests.value = 2;
+  try {
+    const response = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(booking)
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      throw new Error(err.error || 'Failed to submit booking');
+    }
+
+    showToast("Booking saved. WhatsApp is opening now.");
+
+    const message = encodeURIComponent(buildWhatsAppMessage(booking));
+    window.open(`https://wa.me/${whatsappNumber}?text=${message}`, "_blank", "noopener,noreferrer");
+    bookingForm.reset();
+    bookingForm.elements.guests.value = 2;
+  } catch (error) {
+    showToast(error.message || "Failed to save booking. Please try again.");
+  } finally {
+    if (submitBtn) submitBtn.classList.remove("button-loading");
+  }
 });
 
 const revealObserver = new IntersectionObserver(
