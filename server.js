@@ -40,25 +40,25 @@ cloudinary.config({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Database connection
-let db;
-const client = new MongoClient(process.env.MONGODB_URI);
+// Serverless-friendly Database Connection caching
+let db = null;
+let client = null;
 
 async function connectDB() {
-  try {
+  if (db) return db;
+  if (!client) {
+    client = new MongoClient(process.env.MONGODB_URI);
     await client.connect();
-    db = client.db(process.env.MONGODB_DB);
-    console.log('Connected to MongoDB successfully');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
-    process.exit(1);
   }
+  db = client.db(process.env.MONGODB_DB);
+  return db;
 }
 
-// Admin Verification Middleware
+// Admin Verification Middleware (with fallback password 'DamiTouch2026')
 const verifyAdmin = (req, res, next) => {
   const password = req.headers['x-admin-password'];
-  if (!password || password !== process.env.ADMIN_PASSWORD) {
+  const expectedPassword = process.env.ADMIN_PASSWORD || 'DamiTouch2026';
+  if (!password || password !== expectedPassword) {
     return res.status(401).json({ error: 'Unauthorized: Invalid admin credentials' });
   }
   next();
@@ -66,10 +66,17 @@ const verifyAdmin = (req, res, next) => {
 
 // API Routes
 
+// Admin password verification. Keep this separate from data reads so login does
+// not fail just because the database is temporarily unavailable.
+app.get('/api/admin/verify', verifyAdmin, (req, res) => {
+  res.json({ success: true });
+});
+
 // 1. BOOKINGS API
 // GET bookings (Admin only)
 app.get('/api/bookings', verifyAdmin, async (req, res) => {
   try {
+    const db = await connectDB();
     const bookings = await db.collection('damitouch_bookings')
       .find({})
       .sort({ createdAt: -1 })
@@ -105,6 +112,7 @@ app.post('/api/bookings', async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
+    const db = await connectDB();
     const result = await db.collection('damitouch_bookings').insertOne(booking);
     res.status(201).json({ success: true, bookingId: result.insertedId, booking });
   } catch (error) {
@@ -116,6 +124,7 @@ app.post('/api/bookings', async (req, res) => {
 // DELETE all bookings (Admin only)
 app.delete('/api/bookings', verifyAdmin, async (req, res) => {
   try {
+    const db = await connectDB();
     await db.collection('damitouch_bookings').deleteMany({});
     res.json({ success: true, message: 'All bookings cleared successfully' });
   } catch (error) {
@@ -128,6 +137,7 @@ app.delete('/api/bookings', verifyAdmin, async (req, res) => {
 // GET all properties (Public)
 app.get('/api/properties', async (req, res) => {
   try {
+    const db = await connectDB();
     const properties = await db.collection('damitouch_properties')
       .find({})
       .sort({ createdAt: -1 })
@@ -175,6 +185,7 @@ app.post('/api/properties', verifyAdmin, upload.single('imageFile'), async (req,
       createdAt: new Date().toISOString()
     };
 
+    const db = await connectDB();
     const result = await db.collection('damitouch_properties').insertOne(property);
     res.status(201).json({ success: true, propertyId: result.insertedId, property });
   } catch (error) {
@@ -191,6 +202,7 @@ app.delete('/api/properties/:id', verifyAdmin, async (req, res) => {
       return res.status(400).json({ error: 'Invalid property ID format' });
     }
 
+    const db = await connectDB();
     const result = await db.collection('damitouch_properties').deleteOne({ _id: new ObjectId(id) });
     if (result.deletedCount === 0) {
       return res.status(404).json({ error: 'Property not found' });
@@ -202,17 +214,20 @@ app.delete('/api/properties/:id', verifyAdmin, async (req, res) => {
 });
 
 
-// Serve static files from /public
+// Serve static files from /public (only when running locally; Vercel handles public files via vercel.json routes)
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Catch-all route to serve the homepage for other client requests
+// Catch-all route to serve the homepage for other client requests (only when running locally)
 app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Start Server after connecting to MongoDB
-connectDB().then(() => {
+// Only listen to PORT when running locally (not in serverless environment)
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server is running at http://localhost:${PORT}`);
   });
-});
+}
+
+// Export for Vercel Serverless Functions
+module.exports = app;

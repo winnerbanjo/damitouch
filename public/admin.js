@@ -144,7 +144,7 @@ passwordForm.addEventListener("submit", async (event) => {
   submitBtn.classList.add("button-loading");
 
   try {
-    const response = await fetch('/api/bookings', {
+    const response = await fetch('/api/admin/verify', {
       headers: {
         'x-admin-password': password
       }
